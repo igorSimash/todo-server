@@ -1,31 +1,17 @@
-import {FieldPacket, QueryError} from "mysql2";
+import {getDatabaseConnector as db} from './db-injector'
 
-const mysql = require('mysql2');
+const userCheck =  async (email: string) => {
+       return db()
+            .from('user')
+            .select('*')
+            .where({email: email})
+            // .then((rows:any)=> {
+            //     return rows
+            // })
+            // .catch((err:Error) => {
+            //     return err
+            // })
 
-
-const userCheck = (email: string) => {
-    return new Promise((resolve, reject) => {
-
-        const connection = mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME
-        });
-
-        connection.connect();
-
-        const query =`SELECT * FROM user WHERE user.email = '${email}'`;
-
-
-        connection.query(query,  (error: QueryError, results: any, fields: FieldPacket[]) => {
-            if (error)
-                return reject(error);
-            resolve(results);
-        });
-
-        connection.end();
-    });
 
 }
 
