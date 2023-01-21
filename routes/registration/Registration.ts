@@ -3,8 +3,9 @@ const sendEmail = require('../../utils/email/sendEmail.ts');
 const userCheck = require('../../utils/db/userCheck.ts');
 import {Request, Response} from "express";
 const jwt = require('jsonwebtoken');
-const isValidEmail = require('../../utils/isValidEmail.ts')
+const isValidEmail = require('../../utils/email/isValidEmail.ts')
 const addUser = require('../../utils/db/addUser.ts');
+const getLanguageId = require('../../utils/getLanguageId.ts');
 
 const secret = process.env.SMTPSALT
 
@@ -48,11 +49,11 @@ router.get('/registration/:token', (req: Request, res:Response) => {
                     return res.redirect(URLExpired.href)
                 }
                 else {
-                    return res.status(404).json({message: 'Invalid token'});
+                    return res.status(410).json({message: 'The link has expired'});
                 }
             }
             else {
-                const URLRegFinal = new URL('http://localhost:3000/registration/final/');
+                const URLRegFinal = new URL('http://localhost:3000/registration/final/' + req.params.token);
                 URLRegFinal.searchParams.append('email', decoded.email)
                 return res.redirect(URLRegFinal.href);
             }
@@ -64,7 +65,25 @@ router.get('/registration/:token', (req: Request, res:Response) => {
 })
 
 router.post('/registration-final', (req: Request, res:Response) => {
-    addUser('yeahyeah@ukr.net', 'oiuergoeigoeirhgioerhg123axd', 3);
+    jwt.verify(req.body.token, secret, async (err: Error, decoded:any) => {
+        if (err) {
+            console.log(err);
+            if (err.message === 'jwt expired') {
+                return res.status(410).json({message: 'The link has expired'})
+            }
+            else {
+                return res.status(404).json({message: 'Invalid token'});
+            }
+        }
+        else {
+            if (decoded.email !== req.body.email) {
+                return res.status(400).send()
+            }
+            const jwtPassword = jwt.sign({password: req.body.password}, secret);
+            await addUser(req.body.email, jwtPassword, getLanguageId(req.body.language));
+            return res.status(200).send()
+        }
+    })
 })
 
 module.exports = router;
