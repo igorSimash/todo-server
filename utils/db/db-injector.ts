@@ -1,4 +1,5 @@
 const knex = require("knex");
+const connect_sql = require('../../sql/connection.ts');
 import { Knex } from "knex";
 
 let cachedConnection: Knex.Config;
@@ -9,14 +10,8 @@ export const getDatabaseConnector = () => {
         return cachedConnection;
     }
     const config = {
-        client: 'mysql2',
-        connection: {
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME
-        }
+        client: 'mysql',
+        connection: connect_sql
     }
 
     const connection = knex(config);
