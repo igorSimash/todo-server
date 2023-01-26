@@ -5,32 +5,14 @@ const router = require('express').Router();
 const findUserPass = require('../../utils/db/findUserPass.ts');
 const secret = process.env.SMTPSALT;
 
-router.get('/login', (req:any, res:any) => {
-    console.log(req.signedCookies);
-    if(req.session.email){
-        res.send("Hello "+ req.session.email + " Welcome")
+router.get('/login', (req:any, res: Response) => {
+    if (req.session.authorized) {
+        return res.status(200).send()
     }
-    else{
-        res.send("Not Logged In")
-    }
+    return res.status(204).send();
 })
 
 router.post('/login', (req: any, res: Response) => {
-
-    // if (findUserPass())
-    // if (req.session.user){
-    //     console.log('already logged in');
-    // }
-    // else{
-    //
-    // }
-
-    // jwt.verify(findUserPass(req.body.email), secret, async (err: Error, decoded:any) =>{
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    // })
-
     findUserPass(req.body.email)
         .then((response: any) => {
             if (response.length === 0) {
@@ -41,18 +23,14 @@ router.post('/login', (req: any, res: Response) => {
                         return res.status(404).json({message: 'Invalid token'})
                     } else {
                         if (decoded.password === req.body.password) {
-                            console.log('Passwords are equal. User can be logged in');
-                            req.session.email = {
-                                email: 'asdf@example.'
-                            };
-                            console.log(req.session);
-                            return res.status(200).json({message: ''})
+                            req.session.email = req.body.email;
+                            req.session.authorized = true;
+                            return res.status(201).send('')
                         } else {
                             return res.status(401).json({message: 'Invalid password'})
                         }
                     }
                 })
-
             }
         })
 })
