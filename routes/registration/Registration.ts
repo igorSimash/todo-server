@@ -7,7 +7,7 @@ const isValidEmail = require('../../utils/email/isValidEmail.ts')
 const addUser = require('../../utils/db/addUser.ts');
 const getLanguageId = require('../../utils/getLanguageId.ts');
 
-const secret = process.env.SMTPSALT
+const secret = process.env.SMTPSALT;
 
 
 router.post('/registration', async (req: Request, res:Response) => {
@@ -25,7 +25,7 @@ router.post('/registration', async (req: Request, res:Response) => {
         emailUrl.searchParams.append("email", req.body.email);
 
         try {
-            await sendEmail(req.body.email, 'Your url', emailUrl)
+            await sendEmail(req.body.email, 'Your url for registration', emailUrl)
             console.log('Email sent');
             return res.status(200).send();
         }
@@ -49,7 +49,7 @@ router.get('/registration/:token', (req: Request, res:Response) => {
                     return res.redirect(URLExpired.href)
                 }
                 else {
-                    return res.status(410).json({message: 'The link has expired'});
+                    return res.status(498).json({message: 'Invalid token'});
                 }
             }
             else {
@@ -67,12 +67,11 @@ router.get('/registration/:token', (req: Request, res:Response) => {
 router.post('/registration-final', (req: Request, res:Response) => {
     jwt.verify(req.body.token, secret, async (err: Error, decoded:any) => {
         if (err) {
-            console.log(err);
             if (err.message === 'jwt expired') {
                 return res.status(410).json({message: 'The link has expired'})
             }
             else {
-                return res.status(404).json({message: 'Invalid token'});
+                return res.status(498).json({message: 'Invalid token'});
             }
         }
         else {

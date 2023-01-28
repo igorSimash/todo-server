@@ -8,6 +8,7 @@ const options = require('./sql/connection.ts')
 const MySQLStore = require('express-mysql-session')(session);
 const registration = require("./routes/registration/Registration.ts");
 const login = require("./routes/login/Login.ts");
+const forgot_pass = require("./routes/forgot-pass/ForgotPass.ts");
 const logout = require("./routes/logout/Logout.ts");
 
 const app = express();
@@ -48,6 +49,7 @@ app.use(express.json());
 
 app.use("/api", registration);
 app.use("/api", login);
+app.use("/api", forgot_pass);
 app.use("/api", logout);
 
 const port = process.env.PORT || 3002;

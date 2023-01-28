@@ -20,7 +20,7 @@ router.post('/login', (req: any, res: Response) => {
             } else {
                 jwt.verify(response[0].password_hash, secret, async (err: Error, decoded: any) => {
                     if (err) {
-                        return res.status(404).json({message: 'Invalid token'})
+                        return res.status(498).json({message: 'Invalid token'})
                     } else {
                         if (decoded.password === req.body.password) {
                             req.session.email = req.body.email;
