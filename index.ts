@@ -10,6 +10,8 @@ const registration = require("./routes/registration/Registration.ts");
 const login = require("./routes/login/Login.ts");
 const forgot_pass = require("./routes/forgot-pass/ForgotPass.ts");
 const logout = require("./routes/logout/Logout.ts");
+const todo = require("./routes/todo/Todo.ts");
+
 
 const app = express();
 
@@ -51,6 +53,7 @@ app.use("/api", registration);
 app.use("/api", login);
 app.use("/api", forgot_pass);
 app.use("/api", logout);
+app.use("/api", todo)
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
