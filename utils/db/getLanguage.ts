@@ -1,7 +1,7 @@
 import {getDatabaseConnector as db} from './db-injector';
 
 
-const getLanguage = async (email: string) => {
+const getLanguage = async (email: string): Promise<{culture: string}[]> => {
     return db()
         .from('user')
         .join('language', {'language.id': 'user.language_id'})

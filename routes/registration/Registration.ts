@@ -44,7 +44,7 @@ router.get('/registration/:token', (req: Request, res:Response) => {
         jwt.verify(req.params.token, secret, (err: Error, decoded:any) => {
             if(err){
                 if (err.message === 'jwt expired') {
-                    const URLExpired = new URL(<string>process.env.CLIENT_REG_START_410);
+                    const URLExpired = new URL(<string> process.env.CLIENT_REG_START_410);
                     URLExpired.searchParams.append('email', <string>req.query.email)
                     return res.redirect(URLExpired.href)
                 }

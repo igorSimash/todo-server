@@ -4,10 +4,14 @@ const getLanguage = require('../../utils/db/getLanguage.ts')
 
 router.get('/todo', (req: any, res: Response) => {
     try {
-        getLanguage(req.session.email)
-            .then((response: any) => {
-                res.status(200).json({language: response[0].culture})
-            })
+        if (req.session.authorized) {
+            getLanguage(req.session.email)
+                .then((response: {culture:string}[]) => {
+                    res.status(200).json({language: response[0].culture});
+                })
+        }
+        else
+            res.status(440).json({message: 'Session expired'});
     }
     catch (err) {
         console.error(err);
