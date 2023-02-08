@@ -40,7 +40,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
         jwt.verify(req.params.token, secret, (err: Error, decoded:any) => {
             if(err){
                 if (err.message === 'jwt expired') {
-                    const URLExpired = new URL('http://localhost:3000/forgot-pass/410');
+                    const URLExpired = new URL(<string>process.env.CLIENT_FORGOT_PASS_410);
                     URLExpired.searchParams.append('email', <string>req.query.email)
                     return res.redirect(URLExpired.href)
                 }
@@ -49,7 +49,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
                 }
             }
             else {
-                const URLForgPassFinal = new URL('http://localhost:3000/forgot-pass/final/' + req.params.token);
+                const URLForgPassFinal = new URL(<string>process.env.CLIENT_FORGOT_PASS_FINAL + req.params.token);
                 URLForgPassFinal.searchParams.append('email', decoded.email)
                 return res.redirect(URLForgPassFinal.href);
             }

@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const session    = require('express-session');
+const session = require('express-session');
 const mysql = require('mysql');
 const options = require('./sql/connection.ts')
 const MySQLStore = require('express-mysql-session')(session);
@@ -35,14 +35,15 @@ const sessionStore = new MySQLStore({
 
 
 app.use(session({
-    key: "session-id",
-    secret: process.env.SESSION_SALT,
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24
-    }
+        key: "session-id",
+        secret: process.env.SESSION_SALT,
+        store: sessionStore,
+        resave: true,
+        rolling: true,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 30 * 60 * 24 // 24 hours
+        }
     })
 );
 
