@@ -5,7 +5,7 @@ const getLanguage = async (email: string) => {
     return db()
         .from('user')
         .join('language', {'language.id': 'user.language_id'})
-        .select('language.name_short')
+        .select('language.culture')
         .where({'user.email': email})
 }
 

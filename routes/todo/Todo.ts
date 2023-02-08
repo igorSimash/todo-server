@@ -6,7 +6,7 @@ router.get('/todo', (req: any, res: Response) => {
     try {
         getLanguage(req.session.email)
             .then((response: any) => {
-                res.status(200).json({language: response[0].name_short})
+                res.status(200).json({language: response[0].culture})
             })
     }
     catch (err) {
