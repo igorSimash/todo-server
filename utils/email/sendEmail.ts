@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (email: string, subject: string, text: string) => {
+const sendEmail = async (email: string, subject: string, text: string, url: string) => {
     try {
         const transporter = nodemailer.createTransport({
             host: process.env.SMTPHOST,
@@ -16,8 +16,7 @@ const sendEmail = async (email: string, subject: string, text: string) => {
             from: process.env.SMTPFROM,
             to: email,
             subject: subject,
-            // text: text,
-            html: `<div>Click on <a href=${text}>this url</a></div>`,
+            html: `<a href=${url}>${text}</a>`,
         });
     }
     catch (err) {

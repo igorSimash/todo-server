@@ -1,0 +1,12 @@
+{
+  "mail": {
+    "subject": {
+      "forgotPass": "Reset password from TodoIg",
+      "registration": "Register on TodoIg"
+    },
+    "text": {
+      "forgotPass": "To reset your password, click here",
+      "registration": "To register, click here"
+    }
+  }
+}

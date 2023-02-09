@@ -9,7 +9,7 @@ router.get('/login', (req:any, res: Response) => {
     if (req.session.authorized)
         return res.status(200).send();
     return res.status(204).send();
-})
+});
 
 router.post('/login', (req: any, res: Response) => {
     findUserPass(req.body.email)

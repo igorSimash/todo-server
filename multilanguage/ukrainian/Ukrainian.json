@@ -1,0 +1,12 @@
+{
+  "mail": {
+    "subject": {
+      "forgotPass": "Відновити пароль від TodoIg",
+      "registration": "Реєстрація на TodoIg"
+    },
+    "text": {
+      "forgotPass": "Щоб відновити пароль нажміть сюди",
+      "registration": "Щоб зареєструватися нажміть сюди"
+    }
+  }
+}

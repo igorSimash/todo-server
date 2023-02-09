@@ -1,0 +1,12 @@
+{
+  "mail": {
+    "subject": {
+      "forgotPass": "Odzyskaj hasło z TodoIg",
+      "registration": "Zarejestruj się na TodoIg"
+    },
+    "text": {
+      "forgotPass": "Aby zresetować hasło, kliknij tutaj",
+      "registration": "Aby się zarejestrować, kliknij tutaj"
+    }
+  }
+}

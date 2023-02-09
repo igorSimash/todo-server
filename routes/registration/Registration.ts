@@ -10,7 +10,7 @@ const getLanguageId = require('../../utils/getLanguageId.ts');
 const secret = process.env.SMTPSALT;
 
 
-router.post('/registration', async (req: Request, res:Response) => {
+router.post('/registration', async (req: any, res:Response) => {
     try {
         if (!isValidEmail(req.body.email)){
             return res.status(400).json({message: 'Email is invalid'});
@@ -25,7 +25,10 @@ router.post('/registration', async (req: Request, res:Response) => {
         emailUrl.searchParams.append("email", req.body.email);
 
         try {
-            await sendEmail(req.body.email, 'Your url for registration', emailUrl)
+
+            req.i18n.changeLanguage(req.body.language);
+            await sendEmail(req.body.email, req.t('registration', {ns: 'mail_subject'}),
+                req.t('registration', {ns: 'mail_text'}), emailUrl);
             console.log('Email sent');
             return res.status(200).send();
         }

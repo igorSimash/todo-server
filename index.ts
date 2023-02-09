@@ -11,7 +11,8 @@ const login = require("./routes/login/Login.ts");
 const forgot_pass = require("./routes/forgot-pass/ForgotPass.ts");
 const logout = require("./routes/logout/Logout.ts");
 const todo = require("./routes/todo/Todo.ts");
-
+const i18nMiddleware = require('i18next-express-middleware');
+const i18n = require('./multilanguage/i18n.ts');
 
 const app = express();
 
@@ -49,6 +50,8 @@ app.use(session({
 
 
 app.use(express.json());
+
+app.use(i18nMiddleware.handle(i18n));
 
 app.use("/api", registration);
 app.use("/api", login);
