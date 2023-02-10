@@ -1,13 +1,13 @@
 import {Response} from "express";
 const router = require('express').Router();
-const getLanguage = require('../../utils/db/getLanguage.ts')
+const getLanguageCulture = require('../../utils/db/getLanguageCulture.ts')
 
 router.get('/todo', (req: any, res: Response) => {
     try {
         if (req.session.authorized) {
-            getLanguage(req.session.email)
-                .then((response: {culture:string}[]) => {
-                    res.status(200).json({language: response[0].culture});
+            getLanguageCulture(req.session.email)
+                .then((response: string) => {
+                    res.status(200).json({language: response});
                 })
         }
         else

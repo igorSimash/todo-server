@@ -5,7 +5,7 @@ import {Request, Response} from "express";
 const jwt = require('jsonwebtoken');
 const isValidEmail = require('../../utils/email/isValidEmail.ts')
 const addUser = require('../../utils/db/addUser.ts');
-const getLanguageId = require('../../utils/getLanguageId.ts');
+const getLanguageId = require('../../utils/db/getLanguageId.ts');
 
 const secret = process.env.SMTPSALT;
 
@@ -33,6 +33,7 @@ router.post('/registration', async (req: any, res:Response) => {
             return res.status(200).send();
         }
         catch(err) {
+            console.log(err);
             return res.status(502).json({message: 'Failed to send the email'});
         }
 
@@ -82,7 +83,8 @@ router.post('/registration-final', (req: Request, res:Response) => {
                 return res.status(400).send()
             }
             const jwtPassword = jwt.sign({password: req.body.password}, secret);
-            await addUser(req.body.email, jwtPassword, getLanguageId(req.body.language));
+
+            await addUser(req.body.email, jwtPassword, await getLanguageId(req.body.language));
             return res.status(200).send()
         }
     })
