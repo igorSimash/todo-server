@@ -1,0 +1,10 @@
+{
+  "invalid_email": "Email is invalid",
+  "invalid_token": "Invalid token",
+  "invalid_password": "Invalid password",
+  "email_already_registered": "Email is already registered",
+  "send_email_fail": "Failed to send the email",
+  "link_expired": "The link has expired",
+  "user_not_found": "User not found",
+  "session_expired": "Session expired"
+}

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 const findUserPass = require('../../utils/db/findUserPass.ts');
 const secret = process.env.SMTPSALT;
+const error = require('../../assets/constants/errors.json');
 
 router.get('/login', (req:any, res: Response) => {
     if (req.session.authorized)
@@ -15,11 +16,11 @@ router.post('/login', (req: any, res: Response) => {
     findUserPass(req.body.email)
         .then((response: any) => {
             if (response.length === 0)
-                return res.status(401).json({message: 'Invalid Email'});
+                return res.status(401).json({message: error.user_not_found});
             else {
                 jwt.verify(response[0].password_hash, secret, async (err: Error, decoded: any) => {
                     if (err)
-                        return res.status(498).json({message: 'Invalid token'});
+                        return res.status(498).json({message: error.invalid_token});
                     else {
                         if (decoded.password === req.body.password) {
                             req.session.email = req.body.email;
@@ -27,7 +28,7 @@ router.post('/login', (req: any, res: Response) => {
                             return res.status(201).send('');
                         }
                         else
-                            return res.status(401).json({message: 'Invalid password'});
+                            return res.status(401).json({message: error.invalid_password});
                     }
                 })
             }

@@ -6,18 +6,18 @@ const jwt = require('jsonwebtoken');
 const isValidEmail = require('../../utils/email/isValidEmail.ts')
 const addUser = require('../../utils/db/addUser.ts');
 const getLanguageId = require('../../utils/db/getLanguageId.ts');
-
+const error = require('../../assets/constants/errors.json');
 const secret = process.env.SMTPSALT;
 
 
 router.post('/registration', async (req: any, res:Response) => {
     try {
         if (!isValidEmail(req.body.email)){
-            return res.status(400).json({message: 'Email is invalid'});
+            return res.status(400).json({message: error.invalid_email});
         }
 
         if((await userCheck(req.body.email)).length > 0) {
-             return res.status(409).json({message: 'Email is already registered'});
+             return res.status(409).json({message: error.email_already_registered});
         }
         const jwtToken = jwt.sign({email: req.body.email}, secret, {expiresIn: '5m'});
 
@@ -34,7 +34,7 @@ router.post('/registration', async (req: any, res:Response) => {
         }
         catch(err) {
             console.log(err);
-            return res.status(502).json({message: 'Failed to send the email'});
+            return res.status(502).json({message: error.email_already_registered});
         }
 
     }
@@ -53,7 +53,7 @@ router.get('/registration/:token', (req: Request, res:Response) => {
                     return res.redirect(URLExpired.href)
                 }
                 else {
-                    return res.status(498).json({message: 'Invalid token'});
+                    return res.status(498).json({message: error.invalid_token});
                 }
             }
             else {
@@ -72,15 +72,15 @@ router.post('/registration-final', (req: Request, res:Response) => {
     jwt.verify(req.body.token, secret, async (err: Error, decoded:any) => {
         if (err) {
             if (err.message === 'jwt expired') {
-                return res.status(410).json({message: 'The link has expired'})
+                return res.status(410).json({message: error.link_expired})
             }
             else {
-                return res.status(498).json({message: 'Invalid token'});
+                return res.status(498).json({message: error.invalid_token});
             }
         }
         else {
             if (decoded.email !== req.body.email) {
-                return res.status(400).send()
+                return res.status(400).json({message: error.invalid_email})
             }
             const jwtPassword = jwt.sign({password: req.body.password}, secret);
 
