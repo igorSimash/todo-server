@@ -18,7 +18,7 @@ router.post('/forgot-pass', async (req:any, res: Response) => {
             return res.status(404).json({message: error.user_not_found});
         }
 
-        const jwtToken = jwt.sign({email: req.body.email}, secret, {expiresIn: '5m'});
+        const jwtToken = jwt.sign({email: req.body.email, language: req.body.language}, secret, {expiresIn: '5m'});
         const emailUrl = new URL(req.protocol + '://' + req.get('host') + `/api/forgot-pass/${jwtToken}`);
         emailUrl.searchParams.append("email", req.body.email);
         try {
@@ -53,6 +53,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
             }
             else {
                 const URLForgPassFinal = new URL(<string>process.env.CLIENT_FORGOT_PASS_FINAL + req.params.token);
+                URLForgPassFinal.searchParams.append('language', decoded.language);
                 URLForgPassFinal.searchParams.append('email', decoded.email)
                 return res.redirect(URLForgPassFinal.href);
             }

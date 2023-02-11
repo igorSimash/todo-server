@@ -19,7 +19,7 @@ router.post('/registration', async (req: any, res:Response) => {
         if((await userCheck(req.body.email)).length > 0) {
              return res.status(409).json({message: error.email_already_registered});
         }
-        const jwtToken = jwt.sign({email: req.body.email}, secret, {expiresIn: '5m'});
+        const jwtToken = jwt.sign({email: req.body.email, language: req.body.language}, secret, {expiresIn: '5m'});
 
         const emailUrl = new URL(req.protocol + '://' + req.get('host') + `/api/registration/${jwtToken}`);
         emailUrl.searchParams.append("email", req.body.email);
@@ -58,7 +58,8 @@ router.get('/registration/:token', (req: Request, res:Response) => {
             }
             else {
                 const URLRegFinal = new URL(<string>process.env.CLIENT_REG_FINAL + req.params.token);
-                URLRegFinal.searchParams.append('email', decoded.email)
+                URLRegFinal.searchParams.append('language', decoded.language);
+                URLRegFinal.searchParams.append('email', decoded.email);
                 return res.redirect(URLRegFinal.href);
             }
         })
