@@ -8,7 +8,7 @@ const addUser = require('../../utils/db/addUser.ts');
 const getLanguageId = require('../../utils/db/getLanguageId.ts');
 const error = require('../../assets/constants/errors.json');
 const secret = process.env.SMTPSALT;
-
+const isValidPassword = require("../../utils/isValidPassword.ts");
 
 router.post('/registration', async (req: any, res:Response) => {
     try {
@@ -80,11 +80,11 @@ router.post('/registration-final', (req: Request, res:Response) => {
             }
         }
         else {
-            if (decoded.email !== req.body.email) {
-                return res.status(400).json({message: error.invalid_email})
-            }
+            if (decoded.email !== req.body.email)
+                return res.status(400).json({message: error.invalid_email});
+            if(!isValidPassword(req.body.password))
+                return res.status(401).json({message: error.weak_password});
             const jwtPassword = jwt.sign({password: req.body.password}, secret);
-
             await addUser(req.body.email, jwtPassword, await getLanguageId(req.body.language));
             return res.status(200).send()
         }

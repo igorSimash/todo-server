@@ -1,6 +1,7 @@
 const sendEmail = require ("../../utils/email/sendEmail");
 const userChangePass = require('../../utils/db/userChangePass.ts');
 const isValidEmail = require ("../../utils/email/isValidEmail");
+const isValidPassword = require("../../utils/isValidPassword.ts");
 const router = require('express').Router();
 const error = require('../../assets/constants/errors.json');
 import {Response, Request} from "express";
@@ -74,9 +75,10 @@ router.post('/forgot-pass-final', (req:Request, res:Response) => {
             }
         }
         else {
-            if (decoded.email !== req.body.email){
+            if (decoded.email !== req.body.email)
                 return res.status(400).json({message: error.invalid_email})
-            }
+            if(!isValidPassword(req.body.password))
+                return res.status(401).json({message: error.weak_password})
             const jwtPassword = jwt.sign({password: req.body.password}, secret);
             await userChangePass(decoded.email, jwtPassword);
             return res.status(200).send();
