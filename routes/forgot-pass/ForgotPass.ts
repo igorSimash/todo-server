@@ -9,7 +9,7 @@ const userCheck = require ("../../utils/db/userCheck");
 const jwt = require('jsonwebtoken');
 const secret = process.env.SMTPSALT;
 
-router.post('/forgot-pass', async (req:any, res: Response) => {
+router.post('/forgot-pass', async (req:Request, res: Response) => {
     try {
         if (!isValidEmail(req.body.email)){
             return res.status(400).json({message: error.invalid_email});

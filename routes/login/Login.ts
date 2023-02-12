@@ -1,4 +1,4 @@
-import {Response} from "express";
+import {Request, Response} from "express";
 
 const jwt = require('jsonwebtoken');
 const router = require('express').Router();
@@ -6,13 +6,13 @@ const findUserPass = require('../../utils/db/findUserPass.ts');
 const secret = process.env.SMTPSALT;
 const error = require('../../assets/constants/errors.json');
 
-router.get('/login', (req:any, res: Response) => {
+router.get('/login', (req:Request, res: Response) => {
     if (req.session.authorized)
         return res.status(200).send();
     return res.status(204).send();
 });
 
-router.post('/login', (req: any, res: Response) => {
+router.post('/login', (req: Request, res: Response) => {
     findUserPass(req.body.email)
         .then((response: any) => {
             if (response.length === 0)

@@ -10,7 +10,7 @@ const error = require('../../assets/constants/errors.json');
 const secret = process.env.SMTPSALT;
 const isValidPassword = require("../../utils/isValidPassword.ts");
 
-router.post('/registration', async (req: any, res:Response) => {
+router.post('/registration', async (req: Request, res:Response) => {
     try {
         if (!isValidEmail(req.body.email)){
             return res.status(400).json({message: error.invalid_email});

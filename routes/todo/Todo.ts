@@ -1,9 +1,9 @@
-import {Response} from "express";
+import {Request, Response} from "express";
 const router = require('express').Router();
 const getLanguageCulture = require('../../utils/db/getLanguageCulture.ts')
 const error = require('../../assets/constants/errors.json');
 
-router.get('/todo', (req: any, res: Response) => {
+router.get('/todo', (req: Request, res: Response) => {
     try {
         if (req.session.authorized) {
             getLanguageCulture(req.session.email)
