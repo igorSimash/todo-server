@@ -50,7 +50,6 @@ app.use(session({
 
 
 app.use(express.json());
-app.use(i18n.init);
 app.use(i18nMiddleware.handle(multilang));
 
 app.use("/api", registration);
