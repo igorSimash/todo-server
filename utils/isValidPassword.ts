@@ -1,5 +1,1 @@
-const isValidPassword = (password: string) => {
-    return password.length >= 8
-}
-
-module.exports = isValidPassword;
+export const isValidPassword = (password: string) => password.length >= 8;

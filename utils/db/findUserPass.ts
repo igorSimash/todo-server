@@ -1,10 +1,7 @@
 import {getDatabaseConnector as db} from './db-injector';
 
-const findUserPass = async (email:string) => {
-    return db()
-        .from('user')
-        .select('password_hash')
-        .where({email: email});
-}
-
-module.exports = findUserPass;
+export const findUserPass = async (email: string): Promise<string> =>
+	(await db()
+		.from('user')
+		.select('password_hash')
+		.where({email}))[0].password_hash;

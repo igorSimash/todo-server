@@ -1,22 +1,23 @@
-import {Request, Response} from "express";
-const router = require('express').Router();
-const getLanguageCulture = require('../../utils/db/getLanguageCulture.ts')
-const error = require('../../assets/constants/errors.json');
+import {type Request, type Response} from 'express';
 
-router.get('/todo', (req: Request, res: Response) => {
-    try {
-        if (req.session.authorized) {
-            getLanguageCulture(req.session.email)
-                .then((response: string) => {
-                    res.status(200).json({language: response});
-                })
-        }
-        else
-            res.status(440).json({message: error.session_expired});
-    }
-    catch (err) {
-        console.error(err);
-    }
+import {Router} from 'express';
+const router = Router();
+import {getLanguageCulture} from '../../utils/db/getLanguageCulture';
+import error from '../../assets/constants/errors.json';
+
+router.get('/todo', async (req: Request, res: Response) => {
+	try {
+		if (req.session.authorized) {
+			await getLanguageCulture(req.session.email)
+				.then((response: string) => {
+					res.status(200).json({language: response});
+				});
+		} else {
+			res.status(440).json({message: error.session_expired});
+		}
+	} catch (err) {
+		console.error(err);
+	}
 });
 
-module.exports = router;
+export default router;

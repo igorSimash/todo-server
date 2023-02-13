@@ -1,38 +1,36 @@
-import {Request, Response} from "express";
+import {type Request, type Response, Router} from 'express';
+import jwt, {JwtPayload, type VerifyErrors} from 'jsonwebtoken';
+import {findUserPass} from '../../utils/db/findUserPass';
+import error from '../../assets/constants/errors.json';
+const router = Router();
+const secret = process.env.SMTPSALT!;
 
-const jwt = require('jsonwebtoken');
-const router = require('express').Router();
-const findUserPass = require('../../utils/db/findUserPass.ts');
-const secret = process.env.SMTPSALT;
-const error = require('../../assets/constants/errors.json');
+router.get('/login', (req: Request, res: Response) => {
+	if (req.session.authorized) {
+		return res.status(200).send();
+	}
 
-router.get('/login', (req:Request, res: Response) => {
-    if (req.session.authorized)
-        return res.status(200).send();
-    return res.status(204).send();
+	return res.status(204).send();
 });
 
-router.post('/login', (req: Request, res: Response) => {
-    findUserPass(req.body.email)
-        .then((response: any) => {
-            if (response.length === 0)
-                return res.status(401).json({message: error.user_not_found});
-            else {
-                jwt.verify(response[0].password_hash, secret, async (err: Error, decoded: any) => {
-                    if (err)
-                        return res.status(498).json({message: error.invalid_token});
-                    else {
-                        if (decoded.password === req.body.password) {
-                            req.session.email = req.body.email;
-                            req.session.authorized = true;
-                            return res.status(201).send('');
-                        }
-                        else
-                            return res.status(401).json({message: error.invalid_password});
-                    }
-                })
-            }
-        })
-})
+router.post('/login', async (req: Request, res: Response) => {
+	await findUserPass(req.body.email)
+		.then((response: string) => {
+			jwt.verify(response, secret, async (err: any, decoded: any) => {
+				if (err) {
+					return res.status(498).json({message: error.invalid_token});
+				}
 
-module.exports = router;
+				if (decoded.password === req.body.password) {
+					req.session.email = req.body.email;
+					req.session.authorized = true;
+					return res.status(201).send('');
+				}
+
+				return res.status(401).json({message: error.invalid_password});
+			});
+		})
+		.catch(() => res.status(401).json({message: error.user_not_found}));
+});
+
+export default router;

@@ -1,5 +1,1 @@
-const isValidEmail = (email: string): boolean => {
-    return /\S+@\S+\.\S+/.test(email);
-}
-
-module.exports = isValidEmail
+export const isValidEmail = (email: string): boolean => /\S+@\S+\.\S+/.test(email);

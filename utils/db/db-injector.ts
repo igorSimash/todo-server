@@ -1,20 +1,18 @@
-const knex = require("knex");
-const connect_sql = require('../../sql/connection.ts');
-import { Knex } from "knex";
+import knex, {type Knex} from 'knex';
+import {sqlOptions} from '../../sql/connection';
 
-let cachedConnection: Knex.Config;
+let cachedConnection: Knex;
+export const getDatabaseConnector = (): Knex => {
+	if (cachedConnection) {
+		console.log('cachedConnection');
+		return cachedConnection;
+	}
 
-export const getDatabaseConnector = () => {
-    if (cachedConnection) {
-        console.log('cachedConnection')
-        return cachedConnection;
-    }
-    const config = {
-        client: 'mysql',
-        connection: connect_sql
-    }
-
-    const connection = knex(config);
-    cachedConnection = connection;
-    return connection;
-}
+	const config = {
+		client: 'mysql',
+		connection: sqlOptions,
+	};
+	const connection = knex(config);
+	cachedConnection = connection;
+	return connection;
+};
