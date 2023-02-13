@@ -7,6 +7,7 @@ import error from '../../assets/constants/errors.json';
 import {isValidPassword} from '../../utils/isValidPassword';
 import {isValidEmail} from '../../utils/email/isValidEmail';
 import {userChangePass} from '../../utils/db/userChangePass';
+import bcrypt from 'bcrypt';
 const secret = process.env.SMTPSALT!;
 
 router.post('/forgot-pass', async (req: Request, res: Response) => {
@@ -77,9 +78,10 @@ router.post('/forgot-pass-final', (req: Request, res: Response) => {
 			return res.status(401).json({message: error.weak_password});
 		}
 
-		const jwtPassword = jwt.sign({password: req.body.password}, secret);
-		await userChangePass(decoded.email, jwtPassword);
-
+		bcrypt.hash(req.body.password, 12)
+			.then(async (hash: string) => {
+				await userChangePass(req.body.email, hash);
+			});
 		return res.status(200).send();
 	});
 });

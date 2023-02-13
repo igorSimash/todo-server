@@ -8,6 +8,7 @@ import {addUser} from '../../utils/db/addUser';
 import {getLanguageId} from '../../utils/db/getLanguageId';
 import error from '../../assets/constants/errors.json';
 import {isValidPassword} from '../../utils/isValidPassword';
+import bcrypt from 'bcrypt';
 const secret = process.env.SMTPSALT!;
 
 router.post('/registration', async (req: Request, res: Response) => {
@@ -81,8 +82,10 @@ router.post('/registration-final', (req: Request, res: Response) => {
 			return res.status(401).json({message: error.weak_password});
 		}
 
-		const jwtPassword = jwt.sign({password: req.body.password}, secret);
-		await addUser(req.body.email, jwtPassword, await getLanguageId(req.body.language));
+		bcrypt.hash(req.body.password, 12)
+			.then(async (hash: string) => {
+				await addUser(req.body.email, hash, await getLanguageId(req.body.language));
+			});
 		return res.status(200).send();
 	});
 });
