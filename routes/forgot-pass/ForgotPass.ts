@@ -7,7 +7,7 @@ import error from '../../assets/constants/errors.json';
 import {isValidPassword} from '../../utils/isValidPassword';
 import {isValidEmail} from '../../utils/email/isValidEmail';
 import {userChangePass} from '../../utils/db/userChangePass';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'; '';
 const secret = process.env.SMTPSALT!;
 
 router.post('/forgot-pass', async (req: Request, res: Response) => {
@@ -24,7 +24,7 @@ router.post('/forgot-pass', async (req: Request, res: Response) => {
 		const emailUrl = new URL(req.protocol + '://' + req.get('host') + `/api/forgot-pass/${jwtToken}`);
 		emailUrl.searchParams.append('email', req.body.email);
 		try {
-			req.i18n.changeLanguage(req.body.language);
+			await req.i18n.changeLanguage(req.body.language);
 			await sendEmail(req.body.email, req.t('forgotPass', {ns: 'mailSubject'}), req.t('forgotPass', {ns: 'mailText'}), emailUrl);
 			console.log('Email sent');
 			return res.status(200).send();

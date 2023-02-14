@@ -1,7 +1,4 @@
-import Config, {type Knex} from 'knex';
-import {type ConnectionConfig} from 'mysql';
-
-export const sqlOptions: any = {
+export const sqlOptions = {
 	host: process.env.DB_HOST!,
 	port: Number(process.env.DB_PORT),
 	user: process.env.DB_USER!,

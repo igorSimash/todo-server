@@ -9,7 +9,7 @@ router.get('/login', (req: Request, res: Response) => {
 		return res.status(200).send();
 	}
 
-	return res.status(204).send();
+	return res.status(401).send();
 });
 
 router.post('/login', async (req: Request, res: Response) => {
