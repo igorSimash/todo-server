@@ -7,7 +7,8 @@ import error from '../../assets/constants/errors.json';
 import {isValidPassword} from '../../utils/isValidPassword';
 import {isValidEmail} from '../../utils/email/isValidEmail';
 import {userChangePass} from '../../utils/db/userChangePass';
-import bcrypt from 'bcrypt'; '';
+import bcrypt from 'bcrypt';
+import {deleteAllSessions} from '../../utils/db/deleteAllSessions'; '';
 const secret = process.env.SMTPSALT!;
 
 router.post('/forgot-pass', async (req: Request, res: Response) => {
@@ -81,6 +82,7 @@ router.post('/forgot-pass-final', (req: Request, res: Response) => {
 		bcrypt.hash(req.body.password, 12)
 			.then(async (hash: string) => {
 				await userChangePass(req.body.email, hash);
+				await deleteAllSessions(req.body.email);
 			});
 		return res.status(200).send();
 	});
