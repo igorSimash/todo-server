@@ -7,5 +7,7 @@
   "link_expired": "The link has expired",
   "user_not_found": "User not found",
   "session_expired": "Session expired",
-  "weak_password": "Password is weak"
+  "weak_password": "Password is weak",
+  "cyrillic_used": "Do not use cyrillic characters",
+  "invalid_language": "Invalid language"
 }

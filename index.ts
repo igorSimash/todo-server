@@ -15,6 +15,8 @@ import todo from './routes/todo/Todo';
 import logout from './routes/logout/Logout';
 import forgotPass from './routes/forgot-pass/ForgotPass';
 import login from './routes/login/Login';
+import changePass from './routes/change-pass/ChangePass';
+
 const app = express();
 
 app.use(cors({credentials: true, origin: true}));
@@ -50,11 +52,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(middleware.handle(i18next));
-app.use('/api', registration);
-app.use('/api', login);
-app.use('/api', forgotPass);
-app.use('/api', logout);
-app.use('/api', todo);
+app.use('/api', todo, logout, forgotPass, changePass, login, registration);
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {

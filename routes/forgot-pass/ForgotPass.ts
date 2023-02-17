@@ -5,18 +5,16 @@ import jwt from 'jsonwebtoken';
 import {userCheck} from '../../utils/db/userCheck';
 import error from '../../assets/constants/errors.json';
 import {isValidPassword} from '../../utils/isValidPassword';
-import {isValidEmail} from '../../utils/email/isValidEmail';
 import {userChangePass} from '../../utils/db/userChangePass';
 import bcrypt from 'bcrypt';
-import {deleteAllSessions} from '../../utils/db/deleteAllSessions'; '';
+import {deleteAllSessions} from '../../utils/db/deleteAllSessions';
+import {validateRequestSchema} from '../../middleware/validateReqSchema';
+import {regStartSchema} from '../../utils/json-validator/routes/RegStartSchema';
+import {regFinalSchema} from '../../utils/json-validator/routes/RegFinalSchema'; '';
 const secret = process.env.SMTPSALT!;
 
-router.post('/forgot-pass', async (req: Request, res: Response) => {
+router.post('/forgot-pass', regStartSchema, validateRequestSchema, async (req: Request, res: Response) => {
 	try {
-		if (!isValidEmail(req.body.email)) {
-			return res.status(400).json({message: error.invalid_email});
-		}
-
 		if ((await userCheck(req.body.email)).length === 0) {
 			return res.status(404).json({message: error.user_not_found});
 		}
@@ -61,7 +59,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
 	}
 });
 
-router.post('/forgot-pass-final', (req: Request, res: Response) => {
+router.post('/forgot-pass-final', regFinalSchema, validateRequestSchema, (req: Request, res: Response) => {
 	jwt.verify(req.body.token, secret, async (err: any, decoded: any) => {
 		if (err) {
 			if (err.message === 'jwt expired') {
@@ -73,10 +71,6 @@ router.post('/forgot-pass-final', (req: Request, res: Response) => {
 
 		if (decoded.email !== req.body.email) {
 			return res.status(400).json({message: error.invalid_email});
-		}
-
-		if (!isValidPassword(req.body.password)) {
-			return res.status(401).json({message: error.weak_password});
 		}
 
 		bcrypt.hash(req.body.password, 12)
