@@ -8,11 +8,10 @@ import {userChangePass} from '../../utils/db/userChangePass';
 import bcrypt from 'bcrypt';
 import {deleteAllSessions} from '../../utils/db/deleteAllSessions';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';
-import {regStartSchema} from '../../utils/json-validator/routes/RegStartSchema';
-import {forgotPassFinalSchema} from '../../utils/json-validator/routes/ForgotPassFinalSchema'; '';
+import {validator} from '../../utils/json-validator/Validator';
 const secret = process.env.SMTPSALT!;
 
-router.post('/forgot-pass', regStartSchema, validateRequestSchema, async (req: Request, res: Response) => {
+router.post('/forgot-pass', validateRequestSchema, validator, async (req: Request, res: Response) => {
 	try {
 		if ((await userCheck(req.body.email)).length === 0) {
 			return res.status(404).json({message: error.user_not_found});
@@ -58,7 +57,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
 	}
 });
 
-router.post('/forgot-pass-final', forgotPassFinalSchema, validateRequestSchema, (req: Request, res: Response) => {
+router.post('/forgot-pass-final', validator, validateRequestSchema, (req: Request, res: Response) => {
 	jwt.verify(req.body.token, secret, async (err: any, decoded: any) => {
 		if (err) {
 			if (err.message === 'jwt expired') {

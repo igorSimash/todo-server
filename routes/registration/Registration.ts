@@ -3,18 +3,15 @@ import {type Request, type Response, Router} from 'express';
 const router = Router();
 import {userCheck} from '../../utils/db/userCheck';
 import jwt from 'jsonwebtoken';
-import {isValidEmail} from '../../utils/email/isValidEmail';
 import {addUser} from '../../utils/db/addUser';
 import {getLanguageId} from '../../utils/db/getLanguageId';
 import error from '../../assets/constants/errors.json';
-import {isValidPassword} from '../../utils/isValidPassword';
 import bcrypt from 'bcrypt';
-import {regStartSchema} from '../../utils/json-validator/routes/RegStartSchema';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';
-import {regFinalSchema} from '../../utils/json-validator/routes/RegFinalSchema';
+import {validator} from '../../utils/json-validator/Validator';
 const secret = process.env.SMTPSALT!;
 
-router.post('/registration', regStartSchema, validateRequestSchema, async (req: Request, res: Response) => {
+router.post('/registration', validator, validateRequestSchema, async (req: Request, res: Response) => {
 	try {
 		if ((await userCheck(req.body.email)).length > 0) {
 			return res.status(409).json({message: error.email_already_registered});
@@ -63,7 +60,7 @@ router.get('/registration/:token', (req: Request, res: Response) => {
 	}
 });
 
-router.post('/registration-final', regFinalSchema, validateRequestSchema, async (req: Request, res: Response) => {
+router.post('/registration-final', validator, validateRequestSchema, async (req: Request, res: Response) => {
 	if ((await userCheck(req.body.email)).length > 0) {
 		return res.status(409).json({message: error.email_already_registered});
 	}

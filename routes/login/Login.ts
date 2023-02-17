@@ -4,7 +4,7 @@ import error from '../../assets/constants/errors.json';
 const router = Router();
 import bcrypt from 'bcrypt';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';
-import {loginSchema} from '../../utils/json-validator/routes/LoginSchema';
+import {validator} from '../../utils/json-validator/Validator';
 router.get('/login', (req: Request, res: Response) => {
 	if (req.session.authorized) {
 		return res.status(200).send();
@@ -12,7 +12,7 @@ router.get('/login', (req: Request, res: Response) => {
 
 	return res.status(401).send();
 });
-router.post('/login', loginSchema, validateRequestSchema, async (req: Request, res: Response) => {
+router.post('/login', validator, validateRequestSchema, async (req: Request, res: Response) => {
 	await findUserPass(req.body.email)
 		.then((response: string) => {
 			bcrypt.compare(req.body.password, response)
