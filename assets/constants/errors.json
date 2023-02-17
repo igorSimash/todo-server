@@ -9,5 +9,6 @@
   "session_expired": "Session expired",
   "weak_password": "Password is weak",
   "cyrillic_used": "Do not use cyrillic characters",
-  "invalid_language": "Invalid language"
+  "invalid_language": "Invalid language",
+  "passwords_same": "Old password is the same as new password"
 }

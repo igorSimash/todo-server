@@ -4,13 +4,12 @@ const router = Router();
 import jwt from 'jsonwebtoken';
 import {userCheck} from '../../utils/db/userCheck';
 import error from '../../assets/constants/errors.json';
-import {isValidPassword} from '../../utils/isValidPassword';
 import {userChangePass} from '../../utils/db/userChangePass';
 import bcrypt from 'bcrypt';
 import {deleteAllSessions} from '../../utils/db/deleteAllSessions';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';
 import {regStartSchema} from '../../utils/json-validator/routes/RegStartSchema';
-import {regFinalSchema} from '../../utils/json-validator/routes/RegFinalSchema'; '';
+import {forgotPassFinalSchema} from '../../utils/json-validator/routes/ForgotPassFinalSchema'; '';
 const secret = process.env.SMTPSALT!;
 
 router.post('/forgot-pass', regStartSchema, validateRequestSchema, async (req: Request, res: Response) => {
@@ -59,7 +58,7 @@ router.get('/forgot-pass/:token', (req: Request, res: Response) => {
 	}
 });
 
-router.post('/forgot-pass-final', regFinalSchema, validateRequestSchema, (req: Request, res: Response) => {
+router.post('/forgot-pass-final', forgotPassFinalSchema, validateRequestSchema, (req: Request, res: Response) => {
 	jwt.verify(req.body.token, secret, async (err: any, decoded: any) => {
 		if (err) {
 			if (err.message === 'jwt expired') {
