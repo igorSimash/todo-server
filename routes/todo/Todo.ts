@@ -9,6 +9,7 @@ import {getTodoCategoryId} from '../../utils/db/getTodoCategoryId';
 import {addTodo} from '../../utils/db/addTodo';
 import {getUserTodos} from '../../utils/db/getUserTodos';
 import {deleteTodo} from '../../utils/db/deleteTodo';
+import {updateTodo} from '../../utils/db/updateTodo';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -39,6 +40,20 @@ router.post('/todo', async (req: Request, res: Response) => {
 
 router.delete('/todo', async (req: Request, res: Response) => {
 	await deleteTodo(req.body.todoId);
+	res.status(200).send();
+});
+
+router.put('/todo', async (req: Request, res: Response) => {
+	const {
+		id,
+		title,
+		description,
+		priorityId,
+		category,
+	}: {id: number; title: string; description: string; priorityId: number; category: string} = req.body;
+	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId('vigorochok@gmail.com', category);
+	const descriptionResult = description.trim() === '' ? undefined : description;
+	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId});
 	res.status(200).send();
 });
 
