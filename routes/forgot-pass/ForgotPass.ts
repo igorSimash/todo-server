@@ -2,7 +2,7 @@ import {sendEmail} from '../../utils/email/sendEmail';
 import {type Response, type Request, Router} from 'express';
 const router = Router();
 import jwt from 'jsonwebtoken';
-import {userCheck} from '../../utils/db/userCheck';
+import {getUserId} from '../../utils/db/getUserId';
 import error from '../../assets/constants/errors.json';
 import {userChangePass} from '../../utils/db/userChangePass';
 import bcrypt from 'bcrypt';
@@ -13,10 +13,12 @@ const secret = process.env.SMTPSALT!;
 
 router.post('/forgot-pass', validateRequestSchema, validator, async (req: Request, res: Response) => {
 	try {
-		if ((await userCheck(req.body.email)).length === 0) {
+		if (!await getUserId(req.body.email)) {
 			return res.status(404).json({message: error.user_not_found});
 		}
 
+		getUserId(req.body.email)
+			.catch(() => res.status(404).json({message: error.user_not_found}));
 		const jwtToken = jwt.sign({email: req.body.email, language: req.body.language}, secret, {expiresIn: '5m'});
 		const emailUrl = new URL(req.protocol + '://' + req.get('host') + `/api/forgot-pass/${jwtToken}`);
 		emailUrl.searchParams.append('email', req.body.email);

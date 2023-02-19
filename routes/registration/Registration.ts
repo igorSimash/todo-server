@@ -1,7 +1,7 @@
 import {sendEmail} from '../../utils/email/sendEmail';
 import {type Request, type Response, Router} from 'express';
 const router = Router();
-import {userCheck} from '../../utils/db/userCheck';
+import {getUserId} from '../../utils/db/getUserId';
 import jwt from 'jsonwebtoken';
 import {addUser} from '../../utils/db/addUser';
 import {getLanguageId} from '../../utils/db/getLanguageId';
@@ -13,7 +13,7 @@ const secret = process.env.SMTPSALT!;
 
 router.post('/registration', validator, validateRequestSchema, async (req: Request, res: Response) => {
 	try {
-		if ((await userCheck(req.body.email)).length > 0) {
+		if (!await getUserId(req.body.email)) {
 			return res.status(409).json({message: error.email_already_registered});
 		}
 
@@ -61,7 +61,7 @@ router.get('/registration/:token', (req: Request, res: Response) => {
 });
 
 router.post('/registration-final', validator, validateRequestSchema, async (req: Request, res: Response) => {
-	if ((await userCheck(req.body.email)).length > 0) {
+	if (await getUserId(req.body.email)) {
 		return res.status(409).json({message: error.email_already_registered});
 	}
 

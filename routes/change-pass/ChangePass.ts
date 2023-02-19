@@ -16,11 +16,11 @@ router.post('/change-pass', validator, validateRequestSchema, async (req: Reques
 
 	const {email} = req.session;
 	await findUserPass(email)
-		.then((response: string) => {
-			bcrypt.compare(req.body.oldPassword, response)
-				.then((result: boolean) => {
+		.then(async (response: string) => {
+			await bcrypt.compare(req.body.oldPassword, response)
+				.then(async (result: boolean) => {
 					if (result) {
-						bcrypt.hash(req.body.newPassword, 12)
+						await bcrypt.hash(req.body.newPassword, 12)
 							.then(async (hash: string) => {
 								await userChangePass(email, hash);
 								await deleteAllSessions(email);

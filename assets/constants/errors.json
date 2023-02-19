@@ -8,7 +8,7 @@
   "user_not_found": "User not found",
   "session_expired": "Session expired",
   "weak_password": "Password is weak",
-  "cyrillic_used": "Do not use cyrillic characters",
+  "cyrillic_used": "Cyrillic was used",
   "invalid_language": "Invalid language",
   "passwords_same": "Old password is the same as new password"
 }
