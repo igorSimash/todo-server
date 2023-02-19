@@ -8,6 +8,7 @@ import {getUserId} from '../../utils/db/getUserId';
 import {getTodoCategoryId} from '../../utils/db/getTodoCategoryId';
 import {addTodo} from '../../utils/db/addTodo';
 import {getUserTodos} from '../../utils/db/getUserTodos';
+import {deleteTodo} from '../../utils/db/deleteTodo';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -37,7 +38,8 @@ router.post('/todo', async (req: Request, res: Response) => {
 });
 
 router.delete('/todo', async (req: Request, res: Response) => {
-
+	await deleteTodo(req.body.todoId);
+	res.status(200).send();
 });
 
 export default router;
