@@ -10,6 +10,7 @@ import {addTodo} from '../../utils/db/addTodo';
 import {getUserTodos} from '../../utils/db/getUserTodos';
 import {deleteTodo} from '../../utils/db/deleteTodo';
 import {updateTodo} from '../../utils/db/updateTodo';
+import {completeTodo} from '../../utils/db/completeTodo';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -59,6 +60,11 @@ router.put('/todo', async (req: Request, res: Response) => {
 	const deadlineResult = deadline.trim() === '' ? undefined : deadline.trim().replace('T', ' ') + ':00';
 	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
 	res.status(200).send();
+});
+
+router.put('/todo/complete', async (req: Request, res: Response) => {
+	await completeTodo(req.body.id);
+	res.send();
 });
 
 export default router;
