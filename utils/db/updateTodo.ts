@@ -5,8 +5,9 @@ type TodoColumns = {
 	description: string | undefined;
 	priorityId: number;
 	categoryId: number | undefined;
+	deadline: string | undefined;
 };
-export const updateTodo = async (id: number, {title, description, priorityId, categoryId}: TodoColumns) =>
+export const updateTodo = async (id: number, {title, description, priorityId, categoryId, deadline}: TodoColumns) =>
 	db()('todo')
 		.where({id})
-		.update({title, description, priority_id: priorityId, category_id: categoryId});
+		.update({title, description, priority_id: priorityId, category_id: categoryId, deadline});

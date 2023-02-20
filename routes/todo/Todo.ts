@@ -31,10 +31,12 @@ router.post('/todo', async (req: Request, res: Response) => {
 		description,
 		priorityId,
 		category,
-	}: {title: string; description: string; priorityId: number; category: string} = req.body;
+		deadline,
+	}: {title: string; description: string; priorityId: number; category: string; deadline: string} = req.body;
 	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId('vigorochok@gmail.com', category);
 	const descriptionResult = description.trim() === '' ? undefined : description;
-	await addTodo(userId, title, descriptionResult, priorityId, categoryId);
+	const deadlineResult = deadline.trim() === '' ? undefined : deadline.replace('T', ' ') + ':00';
+	await addTodo({userId, title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
 	return res.send();
 });
 
@@ -50,10 +52,12 @@ router.put('/todo', async (req: Request, res: Response) => {
 		description,
 		priorityId,
 		category,
-	}: {id: number; title: string; description: string; priorityId: number; category: string} = req.body;
+		deadline,
+	}: {id: number; title: string; description: string; priorityId: number; category: string; deadline: string} = req.body;
 	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId('vigorochok@gmail.com', category);
 	const descriptionResult = description.trim() === '' ? undefined : description;
-	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId});
+	const deadlineResult = deadline.trim() === '' ? undefined : deadline.trim().replace('T', ' ') + ':00';
+	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
 	res.status(200).send();
 });
 
