@@ -1,6 +1,5 @@
 import {type Request, type Response} from 'express';
 import {Router} from 'express';
-
 const router = Router();
 import {getLanguageCulture} from '../../utils/db/user/getLanguageCulture';
 import error from '../../assets/constants/errors.json';
@@ -14,12 +13,13 @@ import {completeTodo} from '../../utils/db/todo/completeTodo';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
-		// If (!req.session.authorized) {
-		// 	res.status(440).json({message: error.session_expired});
-		// }
-
-		const culture = await getLanguageCulture('vigorochok@gmail.com');
-		res.status(200).json({language: culture, todos: await getUserTodos('vigorochok@gmail.com')});
+		if (!req.session.authorized) {
+			console.log(123);
+			res.status(440).json({message: error.session_expired});
+		} else {
+			const culture = await getLanguageCulture(req.session.email);
+			res.status(200).json({language: culture, todos: await getUserTodos(req.session.email)});
+		}
 	} catch (err) {
 		console.error(err);
 	}
