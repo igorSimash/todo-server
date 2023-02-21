@@ -1,10 +1,10 @@
 import {type Response, type Request, Router} from 'express';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';
-import {findUserPass} from '../../utils/db/findUserPass';
+import {findUserPass} from '../../utils/db/user/findUserPass';
 import bcrypt from 'bcrypt';
 import errors from '../../assets/constants/errors.json';
-import {userChangePass} from '../../utils/db/userChangePass';
-import {deleteAllSessions} from '../../utils/db/deleteAllSessions';
+import {userChangePass} from '../../utils/db/user/userChangePass';
+import {deleteAllSessions} from '../../utils/db/user/deleteAllSessions';
 import {validator} from '../../utils/json-validator/Validator';
 import error from '../../assets/constants/errors.json';
 const router = Router();

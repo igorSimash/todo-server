@@ -1,4 +1,4 @@
-import {getDatabaseConnector as db} from './db-injector';
+import {getDatabaseConnector as db} from '../db-injector';
 
 export const getLanguageId = async (culture: string): Promise<number> =>
 	(await db()('language')

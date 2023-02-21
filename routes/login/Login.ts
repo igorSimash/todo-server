@@ -1,5 +1,5 @@
 import {type Request, type Response, Router} from 'express';
-import {findUserPass} from '../../utils/db/findUserPass';
+import {findUserPass} from '../../utils/db/user/findUserPass';
 import error from '../../assets/constants/errors.json';
 const router = Router();
 import bcrypt from 'bcrypt';

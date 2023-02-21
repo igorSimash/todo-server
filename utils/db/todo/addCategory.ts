@@ -1,5 +1,5 @@
-import {getDatabaseConnector as db} from './db-injector';
-import {getUserId} from './getUserId';
+import {getDatabaseConnector as db} from '../db-injector';
+import {getUserId} from '../user/getUserId';
 
 export const addCategory = async (email: string, name: string) => {
 	await db()

@@ -1,10 +1,10 @@
 import {sendEmail} from '../../utils/email/sendEmail';
 import {type Request, type Response, Router} from 'express';
 const router = Router();
-import {getUserId} from '../../utils/db/getUserId';
+import {getUserId} from '../../utils/db/user/getUserId';
 import jwt from 'jsonwebtoken';
-import {addUser} from '../../utils/db/addUser';
-import {getLanguageId} from '../../utils/db/getLanguageId';
+import {addUser} from '../../utils/db/user/addUser';
+import {getLanguageId} from '../../utils/db/user/getLanguageId';
 import error from '../../assets/constants/errors.json';
 import bcrypt from 'bcrypt';
 import {validateRequestSchema} from '../../middleware/validateReqSchema';

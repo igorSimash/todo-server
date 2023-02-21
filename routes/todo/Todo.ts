@@ -2,15 +2,15 @@ import {type Request, type Response} from 'express';
 import {Router} from 'express';
 
 const router = Router();
-import {getLanguageCulture} from '../../utils/db/getLanguageCulture';
+import {getLanguageCulture} from '../../utils/db/user/getLanguageCulture';
 import error from '../../assets/constants/errors.json';
-import {getUserId} from '../../utils/db/getUserId';
-import {getTodoCategoryId} from '../../utils/db/getTodoCategoryId';
-import {addTodo} from '../../utils/db/addTodo';
-import {getUserTodos} from '../../utils/db/getUserTodos';
-import {deleteTodo} from '../../utils/db/deleteTodo';
-import {updateTodo} from '../../utils/db/updateTodo';
-import {completeTodo} from '../../utils/db/completeTodo';
+import {getUserId} from '../../utils/db/user/getUserId';
+import {getTodoCategoryId} from '../../utils/db/todo/getTodoCategoryId';
+import {addTodo} from '../../utils/db/todo/addTodo';
+import {getUserTodos} from '../../utils/db/todo/getUserTodos';
+import {deleteTodo} from '../../utils/db/todo/deleteTodo';
+import {updateTodo} from '../../utils/db/todo/updateTodo';
+import {completeTodo} from '../../utils/db/todo/completeTodo';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {

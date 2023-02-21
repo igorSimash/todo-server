@@ -1,4 +1,4 @@
-import {getDatabaseConnector as db} from './db-injector';
+import {getDatabaseConnector as db} from '../db-injector';
 
 export const findUserPass = async (email: string): Promise<string> =>
 	(await db()

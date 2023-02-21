@@ -1,4 +1,4 @@
-import {getDatabaseConnector as db} from './db-injector';
+import {getDatabaseConnector as db} from '../db-injector';
 
 type TodoOptions = {
 	userId: number;

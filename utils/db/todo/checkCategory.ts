@@ -1,5 +1,5 @@
-import {getDatabaseConnector as db} from './db-injector';
-import {getUserId} from './getUserId';
+import {getDatabaseConnector as db} from '../db-injector';
+import {getUserId} from '../user/getUserId';
 
 export const checkCategory = async (email: string, name: string): Promise<number | undefined> => (await db()('category')
 	.select('id')
