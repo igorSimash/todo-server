@@ -13,7 +13,7 @@ const secret = process.env.SMTPSALT!;
 
 router.post('/registration', validator, validateRequestSchema, async (req: Request, res: Response) => {
 	try {
-		if (!await getUserId(req.body.email)) {
+		if (await getUserId(req.body.email)) {
 			return res.status(409).json({message: error.email_already_registered});
 		}
 

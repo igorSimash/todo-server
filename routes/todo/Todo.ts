@@ -14,7 +14,6 @@ import {completeTodo} from '../../utils/db/todo/completeTodo';
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
 		if (!req.session.authorized) {
-			console.log(123);
 			res.status(440).json({message: error.session_expired});
 		} else {
 			const culture = await getLanguageCulture(req.session.email);
@@ -26,7 +25,7 @@ router.get('/todo', async (req: Request, res: Response) => {
 });
 
 router.post('/todo', async (req: Request, res: Response) => {
-	const userId = await getUserId('vigorochok@gmail.com');
+	const userId = await getUserId(req.session.email);
 	const {
 		title,
 		description,
@@ -34,7 +33,7 @@ router.post('/todo', async (req: Request, res: Response) => {
 		category,
 		deadline,
 	}: {title: string; description: string; priorityId: number; category: string; deadline: string} = req.body;
-	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId('vigorochok@gmail.com', category);
+	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId(req.session.email, category);
 	const descriptionResult = description.trim() === '' ? undefined : description;
 	const deadlineResult = deadline.trim() === '' ? undefined : deadline.replace('T', ' ') + ':00';
 	await addTodo({userId, title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
@@ -55,7 +54,7 @@ router.put('/todo', async (req: Request, res: Response) => {
 		category,
 		deadline,
 	}: {id: number; title: string; description: string; priorityId: number; category: string; deadline: string} = req.body;
-	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId('vigorochok@gmail.com', category);
+	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId(req.session.email, category);
 	const descriptionResult = description.trim() === '' ? undefined : description;
 	const deadlineResult = deadline.trim() === '' ? undefined : deadline.trim().replace('T', ' ') + ':00';
 	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
