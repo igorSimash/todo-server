@@ -10,6 +10,7 @@ import {getUserTodos} from '../../utils/db/todo/getUserTodos';
 import {deleteTodo} from '../../utils/db/todo/deleteTodo';
 import {updateTodo} from '../../utils/db/todo/updateTodo';
 import {completeTodo} from '../../utils/db/todo/completeTodo';
+import {getUserCategories} from '../../utils/db/todo/getUserCategories';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -17,7 +18,7 @@ router.get('/todo', async (req: Request, res: Response) => {
 			res.status(440).json({message: error.session_expired});
 		} else {
 			const culture = await getLanguageCulture(req.session.email);
-			res.status(200).json({language: culture, todos: await getUserTodos(req.session.email)});
+			res.status(200).json({language: culture, todos: await getUserTodos(req.session.email), categories: await getUserCategories(req.session.email)});
 		}
 	} catch (err) {
 		console.error(err);
