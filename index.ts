@@ -16,6 +16,7 @@ import logout from './routes/logout/Logout';
 import forgotPass from './routes/forgot-pass/ForgotPass';
 import login from './routes/login/Login';
 import changePass from './routes/change-pass/ChangePass';
+import user from './routes/user/User';
 
 const app = express();
 
@@ -52,7 +53,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(middleware.handle(i18next));
-app.use('/api', todo, logout, forgotPass, changePass, login, registration);
+app.use('/api', todo, logout, forgotPass, changePass, login, registration, user);
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
