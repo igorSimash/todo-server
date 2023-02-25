@@ -6,7 +6,7 @@ const router = Router();
 
 router.put('/user/language', async (req: Request, res: Response) => {
 	try {
-		if (req.session.authorized) {
+		if (!req.session.authorized) {
 			return res.status(440).json({message: error.session_expired});
 		}
 
