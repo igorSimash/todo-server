@@ -11,6 +11,7 @@ import {deleteTodo} from '../../utils/db/todo/deleteTodo';
 import {updateTodo} from '../../utils/db/todo/updateTodo';
 import {completeTodo} from '../../utils/db/todo/completeTodo';
 import {getUserCategories} from '../../utils/db/todo/getUserCategories';
+import {getTodoPriorityId} from '../../utils/db/todo/getTodoPriorityId';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -51,13 +52,14 @@ router.put('/todo', async (req: Request, res: Response) => {
 		id,
 		title,
 		description,
-		priorityId,
+		priority,
 		category,
 		deadline,
-	}: {id: number; title: string; description: string; priorityId: number; category: string; deadline: string} = req.body;
-	const categoryId = category.trim() === '' ? undefined : await getTodoCategoryId(req.session.email, category);
-	const descriptionResult = description.trim() === '' ? undefined : description;
-	const deadlineResult = deadline.trim() === '' ? undefined : deadline.trim().replace('T', ' ') + ':00';
+	}: {id: number; title: string; description: string; priority: string; category: string; deadline: string} = req.body;
+	const categoryId = category?.trim() === '' ? undefined : await getTodoCategoryId(req.session.email, category);
+	const descriptionResult = description?.trim() === '' ? undefined : description;
+	const deadlineResult = deadline?.trim() === '' ? undefined : deadline.trim().replace('T', ' ') + ':00';
+	const priorityId = await getTodoPriorityId(priority);
 	await updateTodo(id, {title, description: descriptionResult, priorityId, categoryId, deadline: deadlineResult});
 	res.status(200).send();
 });

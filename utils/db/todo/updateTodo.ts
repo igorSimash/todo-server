@@ -10,4 +10,4 @@ type TodoColumns = {
 export const updateTodo = async (id: number, {title, description, priorityId, categoryId, deadline}: TodoColumns) =>
 	db()('todo')
 		.where({id})
-		.update({title, description, priority_id: priorityId, category_id: categoryId, deadline});
+		.update({title, description: description ?? null, priority_id: priorityId, category_id: categoryId ?? null, deadline: deadline ?? null});
