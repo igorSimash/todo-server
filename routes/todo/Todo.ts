@@ -96,10 +96,15 @@ router.put('/todo/complete', async (req: Request, res: Response) => {
 
 router.delete('/todo/category', async (req: Request, res: Response) => {
 	try {
+		if (!req.session.authorized) {
+			return res.status(440).json({message: error.session_expired});
+		}
+
 		const {category}: {category: string} = req.body;
 		const categoryId = await getTodoCategoryId(req.session.email, category);
 		await deleteAllCategoryTodos(categoryId);
 		await deleteCategory(categoryId);
+		res.status(200).send();
 	} catch (err) {
 		console.error(err);
 	}
