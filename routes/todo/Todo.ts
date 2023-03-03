@@ -11,6 +11,8 @@ import {deleteTodo} from '../../utils/db/todo/deleteTodo';
 import {updateTodo} from '../../utils/db/todo/updateTodo';
 import {updateCompletedStatus} from '../../utils/db/todo/updateCompletedStatus';
 import {getUserCategories} from '../../utils/db/todo/getUserCategories';
+import {deleteAllCategoryTodos} from '../../utils/db/todo/deleteAllCategoryTodos';
+import {deleteCategory} from '../../utils/db/todo/deleteCategory';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
@@ -51,7 +53,7 @@ router.delete('/todo', async (req: Request, res: Response) => {
 			return res.status(440).json({message: error.session_expired});
 		}
 
-		await deleteTodo(req.body.todoId);
+		await deleteTodo(req.body.id);
 		res.status(200).send();
 	} catch (err) {
 		console.error(err);
@@ -87,6 +89,17 @@ router.put('/todo/complete', async (req: Request, res: Response) => {
 
 		await updateCompletedStatus(req.body.id);
 		res.status(200).send();
+	} catch (err) {
+		console.error(err);
+	}
+});
+
+router.delete('/todo/category', async (req: Request, res: Response) => {
+	try {
+		const {category}: {category: string} = req.body;
+		const categoryId = await getTodoCategoryId(req.session.email, category);
+		await deleteAllCategoryTodos(categoryId);
+		await deleteCategory(categoryId);
 	} catch (err) {
 		console.error(err);
 	}
