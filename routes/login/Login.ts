@@ -13,6 +13,7 @@ router.get('/login', (req: Request, res: Response) => {
 	return res.status(401).send();
 });
 router.post('/login', validator, validateRequestSchema, async (req: Request, res: Response) => {
+	console.log(req.body.email);
 	await findUserPass(req.body.email)
 		.then((response: string) => {
 			bcrypt.compare(req.body.password, response)

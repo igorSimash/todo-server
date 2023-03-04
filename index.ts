@@ -23,7 +23,7 @@ app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-const sessionConnection = mysql.createConnection(sqlOptions);
+const sessionConnection = mysql.createPool(sqlOptions);
 
 const sessionStore = new mySqlStore({
 	createDatabaseTable: true,
