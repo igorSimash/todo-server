@@ -38,7 +38,7 @@ const sessionStore = new mySqlStore({
 }, sessionConnection);
 
 app.use(session({
-	name: 'session-id',
+	name: 'todo-ihor-sessions-name',
 	secret: process.env.SESSION_SALT!,
 	store: sessionStore,
 	resave: true,
@@ -47,6 +47,8 @@ app.use(session({
 	cookie: {
 		maxAge: 1000 * 30 * 60 * 24, // 24 hours
 		httpOnly: false,
+		sameSite: 'none',
+		secure: true,
 	},
 }),
 );
