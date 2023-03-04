@@ -44,6 +44,7 @@ app.use(session({
 	resave: true,
 	rolling: true,
 	saveUninitialized: false,
+	proxy: true,
 	cookie: {
 		maxAge: 1000 * 30 * 60 * 24, // 24 hours
 		httpOnly: true,
