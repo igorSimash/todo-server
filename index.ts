@@ -46,7 +46,7 @@ app.use(session({
 	saveUninitialized: false,
 	proxy: true,
 	cookie: {
-		maxAge: 1000 * 30 * 60 * 24, // 24 hours
+		maxAge: 1000 * 30 * 60 * 24 * 7 * 4, // 4 weeks
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,

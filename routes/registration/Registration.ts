@@ -80,7 +80,7 @@ router.post('/registration-final', validator, validateRequestSchema, async (req:
 
 		bcrypt.hash(req.body.password, 12)
 			.then(async (hash: string) => {
-				await addUser(req.body.email, hash, await getLanguageId(req.body.language));
+				await addUser(req.body.email.trim().toLowerCase(), hash, await getLanguageId(req.body.language));
 			});
 		return res.status(200).send();
 	});
