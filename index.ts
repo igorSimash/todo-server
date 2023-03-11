@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
+app.set('trust proxy', 1);
 const sessionConnection = mysql.createPool(sqlOptions);
 
 const sessionStore = new mySqlStore({

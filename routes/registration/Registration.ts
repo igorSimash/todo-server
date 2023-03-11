@@ -25,7 +25,6 @@ router.post('/registration', validator, validateRequestSchema, async (req: Reque
 		try {
 			await req.i18n.changeLanguage(req.body.language);
 			await sendEmail(req.body.email, req.t('registration', {ns: 'mailSubject'}), req.t('registration', {ns: 'mailText'}), emailUrl);
-			console.log('Email sent');
 			return res.status(200).send();
 		} catch (err) {
 			console.log(err);
