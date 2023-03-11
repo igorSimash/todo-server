@@ -50,7 +50,7 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
-		domain: 'https://ihor-todo.vercel.app',
+		// Domain: process.env.COOKIE_DOMAIN,
 	},
 }),
 );
