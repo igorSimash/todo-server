@@ -43,13 +43,13 @@ app.use(session({
 	store: sessionStore,
 	resave: true,
 	rolling: true,
-	saveUninitialized: true,
+	saveUninitialized: false,
 	proxy: true,
 	cookie: {
 		maxAge: 1000 * 30 * 60 * 24 * 7 * 4, // 4 weeks
-		httpOnly: true,
+		httpOnly: false,
 		sameSite: 'none',
-		secure: 'auto',
+		secure: true,
 	},
 }),
 );
