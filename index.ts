@@ -49,7 +49,7 @@ app.use(session({
 	name: 'todo-ihor-sessions-name',
 	secret: process.env.SESSION_SALT!,
 	store: sessionStore,
-	resave: true,
+	resave: false,
 	rolling: true,
 	saveUninitialized: false,
 	proxy: true,
