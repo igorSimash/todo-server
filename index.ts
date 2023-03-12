@@ -58,7 +58,6 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
-		domain: '.vercel.app',
 	},
 }),
 );
