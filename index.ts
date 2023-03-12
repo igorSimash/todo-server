@@ -49,7 +49,7 @@ app.use(session({
 	name: 'todo-ihor-sessions-name',
 	secret: process.env.SESSION_SALT!,
 	store: sessionStore,
-	resave: false,
+	resave: true,
 	rolling: true,
 	saveUninitialized: false,
 	proxy: true,
@@ -58,6 +58,7 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
+		domain: '.vercel.app',
 	},
 }),
 );
