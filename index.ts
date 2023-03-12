@@ -50,7 +50,6 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
-		domain: process.env.COOKIE_DOMAIN,
 	},
 }),
 );
