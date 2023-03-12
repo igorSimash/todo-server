@@ -16,6 +16,7 @@ import {deleteCategory} from '../../utils/db/todo/deleteCategory';
 
 router.get('/todo', async (req: Request, res: Response) => {
 	try {
+		console.log(req.session);
 		if (!req.session.authorized) {
 			return res.status(440).json({message: error.session_expired});
 		}
