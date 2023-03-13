@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.set('trust proxy', 1);
+// App.set('trust proxy', 1);
 app.use((req, res, next) => {
 	res.set('credentials', 'include');
 	res.set('Access-Control-Allow-Credentials', 'true');
@@ -46,7 +46,7 @@ const sessionStore = new mySqlStore({
 }, sessionConnection);
 
 app.use(session({
-	name: 'todo-ihor-sessions-name',
+	name: 'sid',
 	secret: process.env.SESSION_SALT!,
 	store: sessionStore,
 	resave: true,
