@@ -22,15 +22,7 @@ const app = express();
 app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-// App.set('trust proxy', 1);
-// app.use((req, res, next) => {
-// 	res.set('credentials', 'include');
-// 	res.set('Access-Control-Allow-Credentials', 'true');
-// 	res.set('Access-Control-Allow-Origin', req.headers.origin);
-// 	res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-// 	res.set('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-// 	next();
-// });
+
 const sessionConnection = mysql.createPool(sqlOptions);
 
 const sessionStore = new mySqlStore({
@@ -58,7 +50,6 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
-		signed: true,
 	},
 }),
 );
