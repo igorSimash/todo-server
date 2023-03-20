@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.set('trust proxy', 1);
+
 const sessionConnection = mysql.createPool(sqlOptions);
 
 const sessionStore = new mySqlStore({
@@ -38,7 +38,7 @@ const sessionStore = new mySqlStore({
 }, sessionConnection);
 
 app.use(session({
-	name: 'todo-ihor-sessions-name',
+	name: 'sid',
 	secret: process.env.SESSION_SALT!,
 	store: sessionStore,
 	resave: true,
@@ -50,7 +50,6 @@ app.use(session({
 		httpOnly: true,
 		sameSite: 'none',
 		secure: true,
-		// Domain: process.env.COOKIE_DOMAIN,
 	},
 }),
 );
@@ -58,7 +57,7 @@ app.use(session({
 app.use(middleware.handle(i18next));
 app.use('/api', todo, logout, forgotPass, changePass, login, registration, user);
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT ?? 3002;
 app.listen(port, () => {
 	console.log(`Listening on port ${port}...`);
 });
